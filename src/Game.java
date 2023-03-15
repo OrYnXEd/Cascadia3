@@ -1,97 +1,72 @@
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Scanner;
 
 public class Game {
     private List<Player> players;
-    private Board board;
     private int currentPlayerIndex;
+    private boolean gameEnded;
 
     public Game() {
         players = new ArrayList<>();
-        board = new Board();
         currentPlayerIndex = 0;
+        gameEnded = false;
     }
 
-    public static void main(String[] args) {
-        Game game = new Game();
-        game.run();
-    }
-
-    public void run() {
-        int numberOfPlayers = promptNumberOfPlayers();
-        List<String> playerNames = promptPlayerNames(numberOfPlayers);
-        initializePlayers(playerNames);
-        Collections.shuffle(players);
-
-        while (true) {
-            displayCurrentPlayerHabitat();
-            String command = promptCommand();
-
-            if (command.equalsIgnoreCase("next")) {
-                nextPlayer();
-            } else if (command.equalsIgnoreCase("quit")) {
-                System.out.println("Game ended.");
-                break;
-            } else {
-                System.out.println("Invalid command. Try again.");
-            }
-        }
-    }
-
-    public int promptNumberOfPlayers() {
+    public void promptNumberOfPlayers() {
         Scanner scanner = new Scanner(System.in);
         int numberOfPlayers;
-
-        while (true) {
+        do {
             System.out.print("Enter the number of players (2-4): ");
-            try {
-                numberOfPlayers = Integer.parseInt(scanner.nextLine());
-                if (numberOfPlayers >= 2 && numberOfPlayers <= 4) {
-                    break;
-                } else {
-                    System.out.println("Invalid input. Number of players must be between 2 and 4.");
-                }
-            } catch (NumberFormatException e) {
-                System.out.println("Invalid input. Please enter a valid number.");
+            numberOfPlayers = scanner.nextInt();
+            if (numberOfPlayers < 2 || numberOfPlayers > 4) {
+                System.out.println("Invalid number of players. Please enter a number between 2 and 4.");
             }
-        }
-
-        return numberOfPlayers;
-    }
-
-    public List<String> promptPlayerNames(int numberOfPlayers) {
-        Scanner scanner = new Scanner(System.in);
-        List<String> playerNames = new ArrayList<>();
+        } while (numberOfPlayers < 2 || numberOfPlayers > 4);
 
         for (int i = 0; i < numberOfPlayers; i++) {
             System.out.print("Enter the name of player " + (i + 1) + ": ");
-            String playerName = scanner.nextLine();
-            playerNames.add(playerName);
+            String playerName = scanner.next();
+            players.add(new Player(playerName));
         }
 
-        return playerNames;
-    }
-
-    public void initializePlayers(List<String> playerNames) {
-        for (String playerName : playerNames) {
-            players.add(new Player(playerName));
+        Collections.shuffle(players);
+        System.out.println("Random player order:");
+        for (int i = 0; i < players.size(); i++) {
+            System.out.println((i + 1) + ". " + players.get(i).getName());
         }
     }
 
     public void displayCurrentPlayerHabitat() {
         Player currentPlayer = players.get(currentPlayerIndex);
-        System.out.println("Current player: " + currentPlayer.getName());
-        System.out.println("Habitat:");
-        // Display the habitat of the current player
-        board.displayPlayerHabitat(currentPlayer);
+        System.out.println(currentPlayer.getName() + "'s habitat:");
+        currentPlayer.getPlayerBoard().displayPlayerHabitat();
     }
 
-    public String promptCommand() {
+    public void handleCommand(String command) {
+        if (command.equalsIgnoreCase("next")) {
+            currentPlayerIndex = (currentPlayerIndex + 1) % players.size();
+            displayCurrentPlayerHabitat();
+        } else if (command.equalsIgnoreCase("quit")) {
+            gameEnded = true;
+        }
+    }
+
+    public void start() {
+        promptNumberOfPlayers();
+        displayCurrentPlayerHabitat();
+
         Scanner scanner = new Scanner(System.in);
-        System.out.print("Enter command (next or quit): ");
-        return scanner.nextLine();
+        while (!gameEnded) {
+            System.out.print("Enter a command (next, quit): ");
+            String command = scanner.next();
+            handleCommand(command);
+        }
     }
 
-    public void nextPlayer() {
-        currentPlayerIndex = (currentPlayerIndex + 1) % players.size();
+    public static void main(String[] args) {
+        Game game = new Game();
+        game.start();
     }
 }
