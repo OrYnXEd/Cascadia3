@@ -1,43 +1,33 @@
 public class Player {
-    // ...
     private String name;
-    private Board board;
+    private Board playerBoard;
     private int natureTokens;
-
-   /* public Player(String name) {
-        // ...
-        this.natureTokens = 0;
-    }*/
-
-
-
 
     public Player(String name) {
         this.name = name;
-        this.board = new Board();
+        this.playerBoard = new Board();
+        this.natureTokens = 0;
     }
 
     public String getName() {
         return name;
     }
 
-    public Board getBoard() {
-        return board;
+    public Board getPlayerBoard() {
+        return playerBoard;
     }
-
-    // ...
 
     public int getNatureTokens() {
         return natureTokens;
     }
 
-    public void incrementNatureTokens() {
+    public void addNatureToken() {
         this.natureTokens++;
     }
 
     public void spendNatureToken() {
         if (natureTokens > 0) {
-            natureTokens--;
+            this.natureTokens--;
         }
     }
 }

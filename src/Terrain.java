@@ -1,14 +1,16 @@
 public enum Terrain {
-    FOREST('F'),
-    WETLAND('W'),
-    RIVER('R'),
-    MOUNTAIN('M'),
-    PRAIRIE('P');
+    FOREST('F', "Dark green"),
+    WETLAND('W', "Light green"),
+    RIVER('R', "Blue"),
+    MOUNTAIN('M', "Grey"),
+    PRAIRIE('P', "Yellow");
 
     private final char displayChar;
+    private final String color;
 
-    Terrain(char displayChar) {
+    Terrain(char displayChar, String color) {
         this.displayChar = displayChar;
+        this.color = color;
     }
 
     public char getDisplayChar() {

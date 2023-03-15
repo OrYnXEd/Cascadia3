@@ -18,6 +18,16 @@ public class Board {
         }
     }
 
+
+    public void addTile(Tile tile) {
+        // Add code here to add the tile to the board
+    }
+
+    public void displayBoard() {
+        // Add code here to display the board
+    }
+
+
     public void rotateTile(int tileIndex, int angle) {
         if (tileIndex >= 0 && tileIndex < tiles.size()) {
             tiles.get(tileIndex).rotate(angle);
@@ -47,8 +57,8 @@ public class Board {
             System.out.print(tileChar);
 
             if (i < tokens.size()) {
-                WildlifeToken token = tokens.get(i);
-                char tokenChar = token.getDisplayChar();
+                Wildlife token = tokens.get(i).getWildlife();
+                String tokenChar = token.getDisplayChar();
                 System.out.print(tokenChar);
             } else {
                 System.out.print(" ");

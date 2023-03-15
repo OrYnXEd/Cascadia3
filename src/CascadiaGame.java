@@ -1,4 +1,4 @@
-public class CascadiaGame {
+/*public class CascadiaGame {
     public static void main(String[] args) {
         // ...
 
@@ -16,4 +16,4 @@ public class CascadiaGame {
         game.calculateAndDisplayScores();
         System.out.println("Thanks for playing Cascadia!");
     }
-}
+}*/
