@@ -1,83 +1,60 @@
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.List;
 
 public class Board {
+    private List<Tile> tiles;
+    private List<WildlifeToken> tokens;
 
-
-        private HabitatTile[][] habitatTiles;
-        private WildlifeToken[][] wildlifeTokens;
-    private Map<Player, List<Tile>> playerTiles;
-
-        public Board() {
-            habitatTiles = new HabitatTile[5][5];
-            wildlifeTokens = new WildlifeToken[5][5];
-            playerTiles = new HashMap<>();
-        }
-
-        public boolean isValidPlacement(HabitatTile tile, int x, int y) {
-            // Implement placement validation logic
-        }
-
-        public boolean isValidPlacement(WildlifeToken token, int x, int y) {
-            // Implement placement validation logic
-        }
-
-        public void placeHabitatTile(HabitatTile tile, int x, int y) {
-            // Implement placement logic
-        }
-
-        public void placeWildlifeToken(WildlifeToken token, int x, int y) {
-            // Implement placement logic
-        }
-
-        public void display() {
-            // Implement display logic
-        }
-
-
-    // ...
-
-    // Add a method to check for automatic cull
-    public boolean isAutomaticCullRequired() {
-        // Implement the logic to detect if an automatic cull is required
+    public Board() {
+        tiles = new ArrayList<>();
+        tokens = new ArrayList<>();
     }
 
-    // Add a method to check for optional cull
-    public boolean isOptionalCullAvailable() {
-        // Implement the logic to detect if an optional cull is available
+    public void placeTile(Tile tile, int index) {
+        if (index >= 0 && index < tiles.size()) {
+            tiles.add(index, tile);
+        } else {
+            tiles.add(tile);
+        }
     }
 
-    // Add a method to perform cull
-    public void performCull() {
-        // Implement the logic to perform a cull
+    public void rotateTile(int tileIndex, int angle) {
+        if (tileIndex >= 0 && tileIndex < tiles.size()) {
+            tiles.get(tileIndex).rotate(angle);
+        }
     }
 
-    // ...
+    public void placeWildlifeToken(WildlifeToken token, int index) {
+        if (index >= 0 && index < tokens.size()) {
+            tokens.add(index, token);
+        } else {
+            tokens.add(token);
+        }
+    }
 
+    public boolean attemptTokenPlacement(WildlifeToken token, int index) {
+        // Add logic to check if the token can be placed at the specified index
+        // based on the game rules.
+        // If it can be placed, return true, otherwise return false.
+        return true;
+    }
 
-        public void addTile(Player player, Tile tile) {
-            if (!playerTiles.containsKey(player)) {
-                playerTiles.put(player, new ArrayList<>());
+    public void displayPlayerHabitat() {
+        // Display the board with ASCII Art, including habitats and wildlife tokens
+        for (int i = 0; i < tiles.size(); i++) {
+            Tile tile = tiles.get(i);
+            char tileChar = tile.getDisplayChar();
+            System.out.print(tileChar);
+
+            if (i < tokens.size()) {
+                WildlifeToken token = tokens.get(i);
+                char tokenChar = token.getDisplayChar();
+                System.out.print(tokenChar);
+            } else {
+                System.out.print(" ");
             }
-            playerTiles.get(player).add(tile);
+            System.out.print(" ");
         }
-
-        public void displayPlayerHabitat(Player player) {
-            List<Tile> tiles = playerTiles.get(player);
-
-            if (tiles == null || tiles.isEmpty()) {
-                System.out.println("No habitat tiles for the player.");
-                return;
-            }
-
-            // Assuming habitats are arranged in a single row
-            for (Tile tile : tiles) {
-                System.out.print(tile.getTerrain().getDisplayChar() + " ");
-            }
-            System.out.println();
-
-            // Optionally, display additional information such as wildlife tokens
-        }
+        System.out.println();
     }
-
 }
