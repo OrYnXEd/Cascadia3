@@ -1,8 +1,8 @@
 import java.util.List;
 
 public class KeystoneTile extends Tile {
-    public KeystoneTile(List<Terrain> terrains, List<Wildlife> wildlife) {
-        super(terrains, wildlife);
+    public KeystoneTile(Terrain terrain, WildlifeToken wildlifeToken) {
+        super(terrain, wildlifeToken, true);
     }
 
     @Override

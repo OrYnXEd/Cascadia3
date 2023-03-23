@@ -2,11 +2,14 @@ import javax.swing.*;
 import java.awt.Point;
 import java.util.*;
 
+import javax.swing.JFrame;
+
 public class Game {
     private List<Player> players;
     private Player currentPlayer;
+    private List<List<Tile>> habitatTileStacks;
 
-    private List<WildlifeScoringCard> wildlifeScoringCards;
+    private final List<WildlifeScoringCard> wildlifeScoringCards;
     private int currentPlayerIndex;
     private boolean gameEnded;
     private TileBag tileBag;
@@ -17,6 +20,8 @@ public class Game {
     private List<NatureToken> natureTokens;
     private int totalTurns;
     private int turnCount;
+    private Board board;
+
 
     public Game() {
         players = new ArrayList<>();
@@ -33,6 +38,18 @@ public class Game {
             natureTokens.add(new NatureToken());
         }
         turnCount = 0;
+        board = new Board();
+        habitatTileStacks = new ArrayList<>();
+        for (Terrain terrain : Terrain.values()) {
+            if (terrain != Terrain.STARTER) {
+                List<Tile> stack = new ArrayList<>();
+                for (int i = 0; i < 5; i++) {
+                    stack.add(new Tile(terrain, false));
+                }
+                habitatTileStacks.add(stack);
+            }
+        }
+
     }
 
 
@@ -65,7 +82,19 @@ public class Game {
     }
 
     public void calculateAndDisplayScorecard() {
-        // Add logic to calculate and display scores for each player
+        for (Player player : players) {
+            int wildlifeScore = calculateWildlifeScoring(player);
+            int corridorScore = calculateHabitatTileCorridors(player);
+            int majorityScore = calculateHabitatTileCorridorMajorities(player);
+            int natureScore = calculateNatureTokenScore(player);
+            int totalScore = wildlifeScore + corridorScore + majorityScore + natureScore;
+            System.out.println("Player " + player.getName() + " score: ");
+            System.out.println("Wildlife: " + wildlifeScore);
+            System.out.println("Habitat tile corridors: " + corridorScore);
+            System.out.println("Habitat tile corridor majorities: " + majorityScore);
+            System.out.println("Nature tokens: " + natureScore);
+            System.out.println("Total: " + totalScore);
+        }
     }
     public void promptNumberOfPlayers() {
         Scanner scanner = new Scanner(System.in);
@@ -137,11 +166,25 @@ public class Game {
             // Select an existing combination
         }
     }
-
-    public void placeTileAndToken(Tile tile, WildlifeToken token) {
-        currentPlayer.getPlayerBoard().placeTile(tile);
-        currentPlayer.getPlayerBoard().placeWildlifeToken(token);
+    public void placeTile(Tile tile, int row, int col) {
+        if (board.isValidPlacement(tile, row, col)) {
+            board.placeTile(tile, row, col);
+        }
     }
+
+    public void placeTile(Tile tile, int index) {
+        board.placeTile(tile, index);
+    }
+
+    public void placeTile(Tile tile, Point position) {
+        if (board.canPlaceTile(tile, position)) {
+            board.placeTile(tile, position);
+        }
+    }
+   // public void placeTileAndToken(Tile tile, WildlifeToken token) {
+   //     currentPlayer.getPlayerBoard().placeTile(tile);
+   //     currentPlayer.getPlayerBoard().placeWildlifeToken(token);
+   // }
     public void playTurn(int pairIndex) {
         if (pairIndex >= 0 && pairIndex < availableTiles.size()) {
             Tile selectedTile = availableTiles.get(pairIndex);
@@ -275,42 +318,6 @@ public class Game {
 
         // Determine the winner and handle tiebreakers
     }
-    public class ScoringCard {
-
-        public enum WildlifeType {
-            BEAR,
-            ELK,
-            SALMON,
-            HAWK,
-            FOX
-        }
-
-        public enum ScoringType {
-            A,
-            B,
-            C,
-            D
-        }
-
-        private WildlifeType wildlifeType;
-        private ScoringType scoringType;
-
-        public ScoringCard(WildlifeType wildlifeType, ScoringType scoringType) {
-            this.wildlifeType = wildlifeType;
-            this.scoringType = scoringType;
-        }
-
-        public WildlifeType getWildlifeType() {
-            return wildlifeType;
-        }
-
-        public ScoringType getScoringType() {
-            return scoringType;
-        }
-    }
-
-
-
 
     public void start() {
         promptNumberOfPlayers();

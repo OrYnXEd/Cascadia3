@@ -7,13 +7,9 @@ public class Tile {
     private int rotation;
     private boolean isStarter;
 
-    public Tile(Terrain terrain, boolean isStarter, List<Terrain> terrains, List<Wildlife> wildlife) {
+    public Tile(Terrain terrain, boolean isStarter) {
         this.terrain = terrain;
         this.isStarter = isStarter;
-    }
-
-    public boolean isStarter() {
-        return isStarter;
     }
 
     public Tile(Terrain terrain, WildlifeToken wildlifeToken, boolean isKeystone) {
@@ -23,6 +19,10 @@ public class Tile {
         this.rotation = 0;
     }
 
+    public boolean isStarter() {
+        return isStarter;
+    }
+
     public Terrain getTerrain() {
         return terrain;
     }
@@ -30,24 +30,29 @@ public class Tile {
     public WildlifeToken getWildlifeToken() {
         return wildlifeToken;
     }
-    public void canPlaceTile(Tile newTile, int row, int col) {
+
+    public boolean canPlaceTile(Tile newTile, int row, int col) {
         // Implement logic to check if the newTile can be placed at (row, col) according to the rules
+        return true; // change this
     }
+
     public List<Terrain> getTerrains() {
-        return terrain;
+        return List.of(terrain);
     }
 
     public List<Wildlife> getWildlife() {
-        return wildlife;
+        return wildlifeToken != null ? List.of(wildlifeToken.getWildlife()) : List.of();
     }
 
     public String getDescription() {
-        return "This tile has " + terrains + ". You can place " + wildlife + " on this tile.";
+        return "This tile has " + getTerrains() + ". You can place " + getWildlife() + " on this tile.";
     }
 
-    public void canPlaceToken(WildlifeToken token, int row, int col) {
+    public boolean canPlaceToken(WildlifeToken token, int row, int col) {
         // Implement logic to check if the token can be placed at (row, col) according to the rules
+        return true; // change this
     }
+
     public boolean isKeystone() {
         return isKeystone;
     }

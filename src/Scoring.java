@@ -26,7 +26,8 @@ public class Scoring {
         C,
         D
     }
-
+    private WildlifeType wildlifeType;
+  //  private ScoringType scoringType;
     // Scoring methods for each wildlife type
     public int scoreBears(WildlifeType wildlifeType, ScoringCard scoringCard, Board board) {
         // Implement scoring logic for bears based on the scoringCard
@@ -328,4 +329,25 @@ public class Scoring {
 
         return totalScore;
     }
+
+///
+
+
+
+
+    public void ScoringCard(WildlifeType wildlifeType, ScoringType scoringType) {
+        this.wildlifeType = wildlifeType;
+        this.scoringType = scoringType;
+    }
+
+    public WildlifeType getWildlifeType() {
+        return wildlifeType;
+    }
+
+    public ScoringType getScoringType() {
+        return scoringType;
+    }
 }
+
+
+
