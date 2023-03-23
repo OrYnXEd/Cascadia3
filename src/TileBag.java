@@ -7,14 +7,25 @@ public class TileBag {
 
     public TileBag() {
         tiles = new ArrayList<>();
-        // Add code here to populate the tiles list based on game rules
+        // Add starter habitat tiles
+        for (int i = 0; i < 5; i++) {
+            tiles.add(new Tile(Terrain.STARTER, true));
+        }
+        // Add other tiles
+        for (Terrain terrain : Terrain.values()) {
+            if (terrain != Terrain.STARTER) {
+                for (int i = 0; i < 5; i++) {
+                    tiles.add(new Tile(terrain, false));
+                }
+            }
+        }
+        Collections.shuffle(tiles);
     }
 
     public Tile drawRandomTile() {
-        if (tiles.isEmpty()) {
-            return null;
+        if (!tiles.isEmpty()) {
+            return tiles.remove(tiles.size() - 1);
         }
-        Collections.shuffle(tiles);
-        return tiles.remove(0);
+        return null;
     }
 }

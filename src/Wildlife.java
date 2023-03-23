@@ -5,8 +5,8 @@ public enum Wildlife {
     SALMON("S", "Pink/Red"),
     FOX("F", "Orange");
 
-    private String displayChar;
-    private String color;
+    private final String displayChar;
+    private final String color;
 
     Wildlife(String displayChar, String color) {
         this.displayChar = displayChar;
@@ -19,5 +19,9 @@ public enum Wildlife {
 
     public String getColor() {
         return color;
+    }
+
+    public String getAbbreviation() {
+        return String.valueOf(displayChar);
     }
 }

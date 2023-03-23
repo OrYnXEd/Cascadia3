@@ -7,14 +7,20 @@ public class WildlifeTokenBag {
 
     public WildlifeTokenBag() {
         tokens = new ArrayList<>();
-        // Add code here to populate the tokens list based on game rules
+        for (int i = 0; i < 20; i++) {
+            tokens.add(new WildlifeToken(Wildlife.BEAR));
+            tokens.add(new WildlifeToken(Wildlife.ELK));
+            tokens.add(new WildlifeToken(Wildlife.SALMON));
+            tokens.add(new WildlifeToken(Wildlife.HAWK));
+            tokens.add(new WildlifeToken(Wildlife.FOX));
+        }
+        Collections.shuffle(tokens);
     }
 
     public WildlifeToken drawRandomToken() {
-        if (tokens.isEmpty()) {
-            return null;
+        if (!tokens.isEmpty()) {
+            return tokens.remove(tokens.size() - 1);
         }
-        Collections.shuffle(tokens);
-        return tokens.remove(0);
+        return null;
     }
 }
